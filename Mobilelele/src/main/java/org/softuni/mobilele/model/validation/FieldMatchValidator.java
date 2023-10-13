@@ -6,6 +6,8 @@ import java.util.Objects;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessException;
 import org.springframework.beans.PropertyAccessorFactory;
+import org.springframework.stereotype.Component;
+
 
 public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Object> {
 
