@@ -1,4 +1,8 @@
 package org.softuni.mobilele.model.dto;
 
-public record UserLoginDTO (String email, String password) {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
+
+public record UserLoginDTO (String email,
+                            String password) {
 }
