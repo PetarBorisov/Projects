@@ -1,7 +1,7 @@
 package com.plannerapp.controller;
 
 import com.plannerapp.model.dto.TaskAddDTO;
-import com.plannerapp.service.LoggedUser;
+import com.plannerapp.util.LoggedUser;
 import com.plannerapp.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
