@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +34,8 @@ public class SecurityConfiguration {
                         // Allow anyone to see the home page, the registration page and the login form
                         .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
                         .requestMatchers("/offers/all").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/offer/**").permitAll()
+                        .requestMatchers("/templates/error").permitAll()
                         .requestMatchers("/brands").hasRole(UserRoleEnum.ADMIN.name())
                         // all other requests are authenticated.
                         .anyRequest().authenticated()
@@ -45,7 +48,7 @@ public class SecurityConfiguration {
                             // The names of the input fields (in our case in auth-login.html)
                             .usernameParameter("email")
                             .passwordParameter("password")
-                            .defaultSuccessUrl("/",true)
+                            .defaultSuccessUrl("/", true)
                             .failureForwardUrl("/users/login-error");
                 }
         ).logout(
@@ -79,5 +82,5 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     }
-}
 
+}
