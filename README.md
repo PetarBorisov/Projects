@@ -1,5 +1,3 @@
-# Welcome to GitHub Desktop!
+# Welcome to My Projects
 
-This is your README. READMEs are where you can communicate what your project is and how to use it.
-
-Write your name on line 6, save it, and then head back to GitHub Desktop.
+The projects in this repo show work with Java, with databases and Spring Framework. I have used Spring Data, Spring Boot and Spring MVC,MySQL and for the connection between backend and frontend I have used Timeleaf. The most enriched in terms of technologies and libraries is the Mobilele project.
