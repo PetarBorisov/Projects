@@ -4,38 +4,48 @@ import org.softuni.mobilele.model.enums.UserRoleEnum;
 import org.softuni.mobilele.repository.UserRepository;
 import org.softuni.mobilele.service.impl.MobileleUserDetailsService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfiguration {
 
     private final String rememberMeKey;
 
-    public SecurityConfiguration(@Value("${mobilele.remember.me.key}")
+    public SecurityConfiguration(@Value(value = "${mobilele.remember.me.key}")
                                  String rememberMeKey) {
         this.rememberMeKey = rememberMeKey;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.authorizeHttpRequests(
-                // Define which urls are visible by which users
-                authorizeRequests -> authorizeRequests
+        return httpSecurity
+
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
                         // All static resources which are situated in js, images, css are available for anyone
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        // allow actuator endpoints
+                        .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
                         // Allow anyone to see the home page, the registration page and the login form
                         .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
                         .requestMatchers("/offers/all").permitAll()
+                        .requestMatchers("/api/currency/convert").permitAll()
                         .requestMatchers(HttpMethod.GET, "/offer/**").permitAll()
-                        .requestMatchers("/templates/error").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers("/brands").hasRole(UserRoleEnum.ADMIN.name())
                         // all other requests are authenticated.
                         .anyRequest().authenticated()
@@ -48,7 +58,7 @@ public class SecurityConfiguration {
                             // The names of the input fields (in our case in auth-login.html)
                             .usernameParameter("email")
                             .passwordParameter("password")
-                            .defaultSuccessUrl("/", true)
+                            .defaultSuccessUrl("/")
                             .failureForwardUrl("/users/login-error");
                 }
         ).logout(
