@@ -10,10 +10,8 @@ import org.softuni.mobilele.model.enums.TransmissionEnum;
 import org.softuni.mobilele.model.validation.YearNotInTheFuture;
 
 public record CreateOfferDTO(@NotEmpty @Size(min = 5, max = 512) String description,
-                             @Positive @NotNull Long modelId,
-                             @NotNull EngineEnum engine,
-                             @NotNull TransmissionEnum transmission,
-                             @NotEmpty String imageUrl,
+                             @Positive @NotNull Long modelId, @NotNull EngineEnum engine,
+                             @NotNull TransmissionEnum transmission, @NotEmpty String imageUrl,
                              @Positive @NotNull Integer mileage,
                              @Positive @NotNull Integer price,
                              @YearNotInTheFuture(message = "The year should not be in the future!")
